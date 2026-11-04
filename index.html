@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#246b3b">
+    <title>Eggplant Leaf Health Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <h1>🍃 Eggplant Leaf Health</h1>
+            <p>AI-Powered Leaf Disease Detection & Agricultural Care Guide</p>
+        </div>
+    </header>
+    <main class="main-container">
+        <section class="card">
+            <h2>Check Your Eggplant Leaf</h2>
+            <p class="card-subtitle">
+                Take a picture or upload an image. Only eggplant leaf images should be analyzed.
+            </p>
+            <div class="button-grid">
+                <button type="button" id="cameraBtn" class="btn btn-primary">
+                    <i class="fa-solid fa-camera"></i> Open Camera
+                </button>
+                <button type="button" id="filesBtn" class="btn btn-secondary">
+                    <i class="fa-solid fa-image"></i> Choose from Files
+                </button>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" hidden>
+            <div id="cameraArea" class="camera-area" hidden>
+                <div class="video-wrapper">
+                    <video id="cameraVideo" autoplay playsinline muted></video>
+                </div>
+                <p class="camera-note">
+                    Position the eggplant leaf inside the camera view.
+                </p>
+                <div class="camera-controls">
+                    <button type="button" id="captureBtn" class="btn btn-accent">
+                        <i class="fa-solid fa-camera"></i> Capture Photo
+                    </button>
+                    <button type="button" id="closeCameraBtn" class="btn btn-muted">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            <canvas id="captureCanvas" hidden></canvas>
+            <div id="previewArea" class="preview-area" hidden>
+                <div class="preview-wrapper">
+                    <img id="preview" alt="Selected image preview">
+                </div>
+                <div class="preview-actions">
+                    <button type="button" id="analyzeBtn" class="btn btn-accent full-width">
+                        <i class="fa-solid fa-magnifying-glass"></i> Analyze Leaf
+                    </button>
+                    <button type="button" id="retakeBtn" class="btn btn-muted full-width">
+                        Choose Another Image
+                    </button>
+                </div>
+            </div>
+            <p id="status" class="status-box" role="status" aria-live="polite">
+                Select Open Camera or Choose from Files to begin.
+            </p>
+        </section>
+        <section id="resultCard" class="card" hidden>
+            <div class="result-header">
+                <div id="resultIcon" class="result-icon">🍃</div>
+                <h3 id="resultTitle">Analysis Result</h3>
+                <p id="resultDescription"></p>
+            </div>
+            <div id="diseaseInfoContainer" class="info-container" hidden>
+                <div class="info-block">
+                    <h4>
+                        <i class="fa-solid fa-circle-info icon-green"></i>
+                        About This Condition
+                    </h4>
+                    <p id="diseaseAboutText"></p>
+                </div>
+                <div id="solutionsGroup" class="info-block">
+                    <h4 id="solutionsHeader">
+                        <i class="fa-solid fa-kit-medical icon-green"></i>
+                        Recommended Actions
+                    </h4>
+                    <ul id="diseaseSolutionsList" class="info-list"></ul>
+                </div>
+                <div id="preventionGroup" class="info-block">
+                    <h4 id="preventionHeader">
+                        <i class="fa-solid fa-shield-halved icon-green"></i>
+                        Prevention Tips
+                    </h4>
+                    <ul id="diseasePreventionList" class="info-list"></ul>
+                </div>
+            </div>
+            <div class="confidence-container">
+                <div class="confidence-labels">
+                    <span>AI Model Confidence</span>
+                    <span id="confidenceText">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="confidenceBar" class="progress-bar-fill"></div>
+                </div>
+            </div>
+            <p class="disclaimer">
+                AI predictions are estimates, not a confirmed plant diagnosis.
+            </p>
+            <button type="button" id="resetBtn" class="btn btn-light full-width">
+                Check Another Leaf
+            </button>
+        </section>
+        <section id="historyCard" class="card" hidden>
+            <div class="history-header">
+                <h3>
+                    <i class="fa-solid fa-clock-rotate-left icon-green"></i>
+                    Detection History
+                </h3>
+                <button type="button" id="clearHistoryBtn" class="clear-history-btn">
+                    Clear History
+                </button>
+            </div>
+            <p class="history-subtitle">
+                Restore an earlier result or delete an entry.
+            </p>
+            <ul id="historyList" class="history-list"></ul>
+        </section>
+    </main>
+    <footer class="footer">Eggplant Leaf Health Detection System</footer>
+</body>
+</html>
